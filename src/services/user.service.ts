@@ -1,31 +1,39 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import cookies from "js-cookie";
+import { API_HOST } from "../constants";
+
+interface RequestGet {
+  endPoint: string;
+  config?: AxiosRequestConfig;
+}
 
 class UserService {
-  async me() {
-    const accessToken = cookies.get("accessToken");
-    if (!accessToken) {
-      return;
-    }
+  private readonly API_HOST = API_HOST;
 
-    const { data } = await axios.get(
-      process.env.NEXT_PUBLIC_API_HOST + "/users/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  private async requestGet({ endPoint, config }: RequestGet) {
+    const { data } = await axios.get(endPoint, config);
 
     return data;
   }
 
-  async read(id: number) {
-    const { data } = await axios.get(
-      process.env.NEXT_PUBLIC_API_HOST + "/users/" + id
-    );
+  async me() {
+    const accessToken = cookies.get("accessToken");
+    if (!accessToken) return;
 
-    return data;
+    return this.requestGet({
+      endPoint: `${this.API_HOST}/users/me`,
+      config: {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    });
+  }
+
+  async read(id: number) {
+    return this.requestGet({
+      endPoint: `${this.API_HOST}/users/me${id}`,
+    });
   }
 }
 

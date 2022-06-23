@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import cookies from "js-cookie";
+import { API_HOST } from "../constants";
 
-type SignupAgreements = {
+interface SignupAgreements {
   privacy: boolean;
   ad:
     | {
@@ -10,56 +11,78 @@ type SignupAgreements = {
         app: boolean;
       }
     | false;
-};
+}
+
+interface UserInfo {
+  email: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
+  agreements: SignupAgreements;
+}
+
+interface RequestPost {
+  payload: Partial<UserInfo> | null;
+  config?: AxiosRequestConfig<UserInfo>;
+  endPoint: string;
+}
+interface Response {
+  access: string;
+  refresh: string;
+}
 
 class AuthService {
+  private readonly API_HOST = API_HOST;
+
+  private async requestPost({ payload, config, endPoint }: RequestPost) {
+    const { data } = await axios.post<Response>(
+      `${this.API_HOST}/${endPoint}`,
+      payload,
+      config
+    );
+
+    return data;
+  }
+
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
     const refreshToken = cookies.get("refreshToken");
-    if (!refreshToken) {
-      return;
-    }
+    if (!refreshToken) return;
 
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/refresh",
-      null,
-      {
+    const { access, refresh } = await this.requestPost({
+      endPoint: "auth/refresh",
+      payload: null,
+      config: {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
-      }
-    );
+      },
+    });
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    cookies.set("accessToken", access, { expires: 1 });
+    cookies.set("refreshToken", refresh, { expires: 7 });
   }
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
-  async signup(
-    email: string,
-    password: string,
-    name: string,
-    phoneNumber: string,
-    agreements: SignupAgreements
-  ) {
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/signup",
-      { email, password, name, phoneNumber, agreements }
-    );
+  async signup(userInfo: UserInfo) {
+    const { access, refresh } = await this.requestPost({
+      endPoint: "auth/signup",
+      payload: userInfo,
+    });
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    cookies.set("accessToken", access, { expires: 1 });
+    cookies.set("refreshToken", refresh, { expires: 7 });
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
-  async login(email: string, password: string) {
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/login",
-      { email, password }
-    );
+  async login(loginUserInfo: Pick<UserInfo, "email" | "password">) {
+    const { access, refresh } = await this.requestPost({
+      payload: loginUserInfo,
+      endPoint: "auth/login",
+    });
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    cookies.set("accessToken", access, { expires: 1 });
+    cookies.set("refreshToken", refresh, { expires: 7 });
   }
 }
 
