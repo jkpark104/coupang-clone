@@ -1,27 +1,13 @@
-import axios, { AxiosRequestConfig } from "axios";
 import cookies from "js-cookie";
-import { API_HOST } from "../constants";
+import BaseService from "./base.service";
 
-interface RequestGet {
-  endPoint: string;
-  config?: AxiosRequestConfig;
-}
-
-class UserService {
-  private readonly API_HOST = API_HOST;
-
-  private async requestGet({ endPoint, config }: RequestGet) {
-    const { data } = await axios.get(endPoint, config);
-
-    return data;
-  }
-
+class UserService extends BaseService<null> {
   async me() {
     const accessToken = cookies.get("accessToken");
     if (!accessToken) return;
 
     return this.requestGet({
-      endPoint: `${this.API_HOST}/users/me`,
+      endPoint: "users/me",
       config: {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -32,7 +18,7 @@ class UserService {
 
   async read(id: number) {
     return this.requestGet({
-      endPoint: `${this.API_HOST}/users/me${id}`,
+      endPoint: `users/me/${id}`,
     });
   }
 }

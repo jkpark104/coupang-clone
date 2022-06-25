@@ -1,6 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
 import cookies from "js-cookie";
-import { API_HOST } from "../constants";
+import BaseService from "./base.service";
 
 interface SignupAgreements {
   privacy: boolean;
@@ -21,29 +20,7 @@ interface UserInfo {
   agreements: SignupAgreements;
 }
 
-interface RequestPost {
-  payload: Partial<UserInfo> | null;
-  config?: AxiosRequestConfig<UserInfo>;
-  endPoint: string;
-}
-interface Response {
-  access: string;
-  refresh: string;
-}
-
-class AuthService {
-  private readonly API_HOST = API_HOST;
-
-  private async requestPost({ payload, config, endPoint }: RequestPost) {
-    const { data } = await axios.post<Response>(
-      `${this.API_HOST}/${endPoint}`,
-      payload,
-      config
-    );
-
-    return data;
-  }
-
+class AuthService extends BaseService<UserInfo> {
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
     const refreshToken = cookies.get("refreshToken");
@@ -77,8 +54,8 @@ class AuthService {
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
   async login(loginUserInfo: Pick<UserInfo, "email" | "password">) {
     const { access, refresh } = await this.requestPost({
-      payload: loginUserInfo,
       endPoint: "auth/login",
+      payload: loginUserInfo,
     });
 
     cookies.set("accessToken", access, { expires: 1 });
