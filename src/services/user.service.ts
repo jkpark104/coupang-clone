@@ -6,7 +6,7 @@ class UserService extends BaseService<null> {
     const accessToken = cookies.get("accessToken");
     if (!accessToken) return;
 
-    return this.requestGet({
+    const data = await this.requestGet({
       endPoint: "users/me",
       config: {
         headers: {
@@ -14,12 +14,16 @@ class UserService extends BaseService<null> {
         },
       },
     });
+
+    return data;
   }
 
   async read(id: number) {
-    return this.requestGet({
+    const data = await this.requestGet({
       endPoint: `users/me/${id}`,
     });
+
+    return data;
   }
 }
 
