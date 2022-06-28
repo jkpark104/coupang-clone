@@ -17,10 +17,10 @@ interface Response {
   refresh: string;
 }
 
-export default abstract class BaseService<T> {
+export default abstract class BaseService {
   private readonly API_HOST = API_HOST;
 
-  async requestPost({ payload, config, endPoint }: RequestPost<T>) {
+  async requestPost<T>({ payload, config, endPoint }: RequestPost<T>) {
     const { data } = await axios.post<Response>(
       `${this.API_HOST}/${endPoint}`,
       payload,

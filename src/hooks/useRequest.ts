@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import { UserService } from "../services";
 
-const service = {
+const services = {
   me: UserService.me,
 };
 
-export const useRequest = (queryKey: keyof typeof service) => {
-  const { data, isError, isLoading } = useQuery(queryKey, service[queryKey], {
+export const useRequest = (queryKey: keyof typeof services) => {
+  const { data, isError, isLoading } = useQuery(queryKey, services[queryKey], {
     refetchInterval: 500,
   });
 

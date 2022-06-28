@@ -20,13 +20,13 @@ interface UserInfo {
   agreements: SignupAgreements;
 }
 
-class AuthService extends BaseService<UserInfo> {
+class AuthService extends BaseService {
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
     const refreshToken = cookies.get("refreshToken");
     if (!refreshToken) return;
 
-    const { access, refresh } = await this.requestPost({
+    const { access, refresh } = await this.requestPost<UserInfo>({
       endPoint: "auth/refresh",
       payload: null,
       config: {
@@ -42,7 +42,7 @@ class AuthService extends BaseService<UserInfo> {
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
   async signup(userInfo: UserInfo) {
-    const { access, refresh } = await this.requestPost({
+    const { access, refresh } = await this.requestPost<UserInfo>({
       endPoint: "auth/signup",
       payload: userInfo,
     });
@@ -53,7 +53,7 @@ class AuthService extends BaseService<UserInfo> {
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
   async login(loginUserInfo: Pick<UserInfo, "email" | "password">) {
-    const { access, refresh } = await this.requestPost({
+    const { access, refresh } = await this.requestPost<UserInfo>({
       endPoint: "auth/login",
       payload: loginUserInfo,
     });

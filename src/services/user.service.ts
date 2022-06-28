@@ -1,7 +1,7 @@
 import cookies from "js-cookie";
 import BaseService from "./base.service";
 
-class UserService extends BaseService<null> {
+class UserService extends BaseService {
   async me() {
     const accessToken = cookies.get("accessToken");
     if (!accessToken) return;
