@@ -10,7 +10,10 @@ interface RequestPost<T> extends Request<T> {
   payload: Partial<T> | null;
 }
 
-type RequestGet = Request<null>;
+type RequestGet = {
+  config?: AxiosRequestConfig;
+  endPoint: string;
+};
 
 interface Response {
   access: string;

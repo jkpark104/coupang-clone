@@ -26,7 +26,7 @@ class AuthService extends BaseService {
     const refreshToken = cookies.get("refreshToken");
     if (!refreshToken) return;
 
-    const { access, refresh } = await this.requestPost<UserInfo>({
+    const { access, refresh } = await this.requestPost({
       endPoint: "auth/refresh",
       payload: null,
       config: {
@@ -42,7 +42,7 @@ class AuthService extends BaseService {
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
   async signup(userInfo: UserInfo) {
-    const { access, refresh } = await this.requestPost<UserInfo>({
+    const { access, refresh } = await this.requestPost({
       endPoint: "auth/signup",
       payload: userInfo,
     });
@@ -53,7 +53,7 @@ class AuthService extends BaseService {
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
   async login(loginUserInfo: Pick<UserInfo, "email" | "password">) {
-    const { access, refresh } = await this.requestPost<UserInfo>({
+    const { access, refresh } = await this.requestPost({
       endPoint: "auth/login",
       payload: loginUserInfo,
     });
