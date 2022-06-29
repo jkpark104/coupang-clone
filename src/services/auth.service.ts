@@ -12,7 +12,7 @@ interface SignupAgreements {
     | false;
 }
 
-interface UserInfo {
+export interface UserInfo {
   email: string;
   password: string;
   name: string;

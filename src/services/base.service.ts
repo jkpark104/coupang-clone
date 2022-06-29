@@ -10,7 +10,7 @@ interface RequestPost<T> extends Request<T> {
   payload: Partial<T> | null;
 }
 
-type RequestGet = Request
+type RequestGet = Request;
 
 interface Response {
   access: string;
@@ -20,7 +20,11 @@ interface Response {
 export default abstract class BaseService {
   private readonly API_HOST = API_HOST;
 
-  async requestPost<T>({ payload, config, endPoint }: RequestPost<T>) {
+  protected async requestPost<T>({
+    payload,
+    config,
+    endPoint,
+  }: RequestPost<T>) {
     const { data } = await axios.post<Response>(
       `${this.API_HOST}/${endPoint}`,
       payload,
@@ -30,7 +34,7 @@ export default abstract class BaseService {
     return data;
   }
 
-  async requestGet({ endPoint, config }: RequestGet) {
+  protected async requestGet({ endPoint, config }: RequestGet) {
     const { data } = await axios.get(`${this.API_HOST}/${endPoint}`, config);
 
     return data;
