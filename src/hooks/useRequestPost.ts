@@ -1,26 +1,26 @@
 import { useMutation } from "react-query";
-import { AuthService, UserInfo } from "../services";
+import { AuthService, UserInfo, LoginInfo } from "../services";
 
 interface AuthServiceRefresh {
-  queryKey: "refresh";
+  mutationKey: "refresh";
 }
 
 interface AuthServiceSignup {
-  queryKey: "signup";
+  mutationKey: "signup";
   userInfo: UserInfo;
 }
 
 interface AuthServiceLogin {
-  queryKey: "login";
-  loginInfo: Pick<UserInfo, "email" | "password">;
+  mutationKey: "login";
+  loginInfo: LoginInfo;
 }
 
 type AuthService = AuthServiceRefresh | AuthServiceSignup | AuthServiceLogin;
 
-const getQueryFunction = (params: AuthService) => {
-  const { queryKey } = params;
+const getMutationFunction = (params: AuthService) => {
+  const { mutationKey } = params;
 
-  switch (queryKey) {
+  switch (mutationKey) {
     case "refresh":
       return AuthService.refresh;
 
@@ -33,11 +33,14 @@ const getQueryFunction = (params: AuthService) => {
 };
 
 export const useRequestPost = (params: AuthService) => {
-  const { queryKey } = params;
+  const { mutationKey } = params;
 
-  const queryFunction = getQueryFunction(params);
+  const mutationFunction = getMutationFunction(params);
 
-  const { data, isError, isLoading } = useMutation(queryKey, queryFunction);
+  const { data, isError, isLoading } = useMutation(
+    mutationKey,
+    mutationFunction
+  );
 
   return { data, isError, isLoading };
 };

@@ -20,6 +20,8 @@ export interface UserInfo {
   agreements: SignupAgreements;
 }
 
+export type LoginInfo = Pick<UserInfo, "email" | "password">;
+
 class AuthService extends BaseService {
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
@@ -52,7 +54,7 @@ class AuthService extends BaseService {
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
-  async login(loginUserInfo: Pick<UserInfo, "email" | "password">) {
+  async login(loginUserInfo: LoginInfo) {
     const { access, refresh } = await this.requestPost({
       endPoint: "auth/login",
       payload: loginUserInfo,
