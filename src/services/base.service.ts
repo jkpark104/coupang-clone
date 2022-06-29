@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { API_HOST } from "../constants";
 
-interface Request<T> {
+interface Request<T = any> {
   config?: AxiosRequestConfig<T>;
   endPoint: string;
 }
@@ -10,10 +10,7 @@ interface RequestPost<T> extends Request<T> {
   payload: Partial<T> | null;
 }
 
-type RequestGet = {
-  config?: AxiosRequestConfig;
-  endPoint: string;
-};
+type RequestGet = Request
 
 interface Response {
   access: string;
