@@ -1,15 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useRequestGet } from "../src/hooks";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { data: me } = useRequestGet({ queryKey: "me" });
-
-  console.log("내 정보입니다", me);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -22,9 +17,8 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Hello World!</h1>
 
         <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>src/services</code>,
-          <code className={styles.code}>src/hooks</code>
+          Get started by editing <code className={styles.code}>pages/auth</code>
+          ,<code className={styles.code}>src/components/common</code>
         </p>
       </main>
 
