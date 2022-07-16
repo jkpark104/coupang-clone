@@ -1,10 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import Button from "../src/components/Button/Button";
+import Check from "../src/components/Check/Check";
+import CheckGroup from "../src/components/CheckGroup/CheckGroup";
+import Input from "../src/components/Input/Input";
 
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
+const Home: NextPage = function HomePage() {
+  const { register } = useForm();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +22,78 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Hello World!</h1>
-
+        <Button text="로그인" theme="blue" />
+        <Input isValid isError {...register("email")} />
+        <Input isValid isError {...register("password")} />
+        <Input isValid isError {...register("confirmPassword")} />
+        <Input isValid isError {...register("name")} />
+        <Input isValid isError {...register("phone")} />
+        <Check text="[필수] 만 14세 이상입니다" hasDescription />
+        <CheckGroup
+          parentCheckInfos={{
+            AGREE_TO_RECEIVE_ADS: {
+              type: "some",
+              children: [
+                "POLICY_AGREE_EMAIL",
+                "POLICY_AGREE_SMS",
+                "POLICY_AGREE_MARKETING_PUSH",
+              ],
+            },
+          }}
+          checkInfos={[
+            {
+              id: "POLICY_AGREE_COLLECT",
+              text: "[선택] 광고성 목적의 개인정보 수집 및 이용 동의",
+              idsToCheck: [
+                "AGREE_TO_RECEIVE_ADS",
+                "POLICY_AGREE_EMAIL",
+                "POLICY_AGREE_SMS",
+                "POLICY_AGREE_MARKETING_PUSH",
+              ],
+              idsToUncheck: [
+                "AGREE_TO_RECEIVE_ADS",
+                "POLICY_AGREE_EMAIL",
+                "POLICY_AGREE_SMS",
+                "POLICY_AGREE_MARKETING_PUSH",
+              ],
+              hasDescription: true,
+            },
+            {
+              id: "AGREE_TO_RECEIVE_ADS",
+              text: "[선택] 광고성 정보 수신 동의",
+              idsToCheck: [
+                "POLICY_AGREE_COLLECT",
+                "POLICY_AGREE_EMAIL",
+                "POLICY_AGREE_SMS",
+                "POLICY_AGREE_MARKETING_PUSH",
+              ],
+              idsToUncheck: [
+                "POLICY_AGREE_EMAIL",
+                "POLICY_AGREE_SMS",
+                "POLICY_AGREE_MARKETING_PUSH",
+              ],
+              hasDescription: true,
+            },
+            {
+              id: "POLICY_AGREE_EMAIL",
+              text: "[선택] 이메일 수신 동의",
+              idsToCheck: ["POLICY_AGREE_COLLECT", "AGREE_TO_RECEIVE_ADS"],
+              idsToUncheck: ["AGREE_TO_RECEIVE_ADS"],
+            },
+            {
+              id: "POLICY_AGREE_SMS",
+              text: "[선택] SMS,MMS 수신 동의",
+              idsToCheck: ["POLICY_AGREE_COLLECT", "AGREE_TO_RECEIVE_ADS"],
+              idsToUncheck: ["AGREE_TO_RECEIVE_ADS"],
+            },
+            {
+              id: "POLICY_AGREE_MARKETING_PUSH",
+              text: "[선택] 앱 푸시 수신 동의",
+              idsToCheck: ["POLICY_AGREE_COLLECT", "AGREE_TO_RECEIVE_ADS"],
+              idsToUncheck: ["AGREE_TO_RECEIVE_ADS"],
+            },
+          ]}
+        />
         <p className={styles.description}>
           Get started by editing <code className={styles.code}>pages/auth</code>
           ,<code className={styles.code}>src/components/common</code>

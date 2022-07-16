@@ -1,1 +1,1 @@
-export * from "./useRequestGet";
+export * from './useRequestGet'

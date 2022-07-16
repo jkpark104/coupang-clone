@@ -1,30 +1,30 @@
-import cookies from "js-cookie";
-import BaseService from "./base.service";
+import cookies from 'js-cookie'
+import BaseService from './base.service'
 
 class UserService extends BaseService {
   async me() {
-    const accessToken = cookies.get("accessToken");
-    if (!accessToken) return;
+    const accessToken = cookies.get('accessToken')
+    if (!accessToken) return
 
     const data = await this.requestGet({
-      endPoint: "users/me",
+      endPoint: 'users/me',
       config: {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       },
-    });
+    })
 
-    return data;
+    return data
   }
 
   async read(id: number) {
     const data = await this.requestGet({
       endPoint: `users/me/${id}`,
-    });
+    })
 
-    return data;
+    return data
   }
 }
 
-export default new UserService();
+export default new UserService()

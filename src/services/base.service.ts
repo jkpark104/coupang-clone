@@ -1,24 +1,9 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { API_HOST } from "../constants";
-
-interface Request<T = any> {
-  config?: AxiosRequestConfig<T>;
-  endPoint: string;
-}
-
-interface RequestPost<T> extends Request<T> {
-  payload: Partial<T> | null;
-}
-
-type RequestGet = Request;
-
-interface Response {
-  access: string;
-  refresh: string;
-}
+import axios from 'axios'
+import { API_HOST } from '../constants'
+import { RequestGet, RequestPost, Response } from './types'
 
 export default abstract class BaseService {
-  private readonly API_HOST = API_HOST;
+  private readonly API_HOST = API_HOST
 
   protected async requestPost<T>({
     payload,
@@ -29,14 +14,14 @@ export default abstract class BaseService {
       `${this.API_HOST}/${endPoint}`,
       payload,
       config
-    );
+    )
 
-    return data;
+    return data
   }
 
   protected async requestGet({ endPoint, config }: RequestGet) {
-    const { data } = await axios.get(`${this.API_HOST}/${endPoint}`, config);
+    const { data } = await axios.get(`${this.API_HOST}/${endPoint}`, config)
 
-    return data;
+    return data
   }
 }

@@ -1,46 +1,31 @@
-import { useMutation } from "react-query";
-import { AuthService, UserInfo, LoginInfo } from "../services";
+import { useMutation } from 'react-query'
+import { AuthService as AuthServiceParams } from './types'
+import { AuthService } from '../services'
 
-interface AuthServiceRefresh {
-  mutationKey: "refresh";
-}
-
-interface AuthServiceSignup {
-  mutationKey: "signup";
-  userInfo: UserInfo;
-}
-
-interface AuthServiceLogin {
-  mutationKey: "login";
-  loginInfo: LoginInfo;
-}
-
-type AuthService = AuthServiceRefresh | AuthServiceSignup | AuthServiceLogin;
-
-const getMutationFunction = (params: AuthService) => {
-  const { mutationKey } = params;
+const getMutationFunction = (params: AuthServiceParams) => {
+  const { mutationKey } = params
 
   switch (mutationKey) {
-    case "refresh":
-      return AuthService.refresh;
+    case 'refresh':
+      return () => AuthService.refresh()
 
-    case "signup":
-      return () => AuthService.signup(params.userInfo);
+    case 'signup':
+      return () => AuthService.signup(params.userInfo)
 
-    case "login":
-      return () => AuthService.login(params.loginInfo);
+    case 'login':
+      return () => AuthService.login(params.loginInfo)
   }
-};
+}
 
-export const useRequestPost = (params: AuthService) => {
-  const { mutationKey } = params;
+export const useRequestPost = (params: AuthServiceParams) => {
+  const { mutationKey } = params
 
-  const mutationFunction = getMutationFunction(params);
+  const mutationFunction = getMutationFunction(params)
 
   const { data, isError, isLoading } = useMutation(
     mutationKey,
     mutationFunction
-  );
+  )
 
-  return { data, isError, isLoading };
-};
+  return { data, isError, isLoading }
+}
