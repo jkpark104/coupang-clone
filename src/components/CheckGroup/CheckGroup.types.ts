@@ -8,8 +8,8 @@ export interface Relation {
 export interface CheckInfo extends CheckProps {
   relation?: Relation
   label: string
-  labelsToCheck: string[]
-  labelsToUncheck: string[]
+  labelsToCheck?: string[]
+  labelsToUncheck?: string[]
 }
 
 export interface CheckGroupProps {

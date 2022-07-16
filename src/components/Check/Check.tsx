@@ -18,12 +18,9 @@ function Checkbox({
   }, [initialIsChecked])
 
   const onChange = () => {
-    setIsChecked((prevIsChecked) => {
-      const nextIsChecked = !prevIsChecked
-
-      handleCheckChange?.(nextIsChecked)
-      return nextIsChecked
-    })
+    const nextIsChecked = !isChecked
+    setIsChecked(nextIsChecked)
+    handleCheckChange?.(nextIsChecked)
   }
 
   return (

@@ -72,36 +72,26 @@ DefaultCheckGroup.args = {
     {
       label: 'JOIN_TERMS_FOURTEEN',
       text: '[필수] 만 14세 이상입니다',
-      labelsToCheck: [],
-      labelsToUncheck: [],
       hasDescription: true,
     },
     {
       label: 'JOIN_TERMS_SERVICE',
       text: '[필수] 쿠팡 이용약관 동의',
-      labelsToCheck: [],
-      labelsToUncheck: [],
       hasDescription: true,
     },
     {
       label: 'JOIN_TERMS_COMMERCE',
       text: '[필수] 전자금융거래 이용약관 동의',
-      labelsToCheck: [],
-      labelsToUncheck: [],
       hasDescription: true,
     },
     {
       label: 'JOIN_TERMS_PRIVACY_COLLECT_USE',
       text: '[필수] 개인정보 수집 및 이용 동의',
-      labelsToCheck: [],
-      labelsToUncheck: [],
       hasDescription: true,
     },
     {
       label: 'AGREE_TO_COLLECT_THIRD_PART_INFORMATION',
       text: '[필수] 개인정보 제3자 제공 동의',
-      labelsToCheck: [],
-      labelsToUncheck: [],
       hasDescription: true,
     },
     {
@@ -149,19 +139,16 @@ DefaultCheckGroup.args = {
       label: 'POLICY_AGREE_EMAIL',
       text: '[선택] 이메일 수신 동의',
       labelsToCheck: ['POLICY_AGREE_COLLECT', 'AGREE_TO_RECEIVE_ADS'],
-      labelsToUncheck: ['AGREE_TO_RECEIVE_ADS'],
     },
     {
       label: 'POLICY_AGREE_SMS',
       text: '[선택] SMS,MMS 수신 동의',
       labelsToCheck: ['POLICY_AGREE_COLLECT', 'AGREE_TO_RECEIVE_ADS'],
-      labelsToUncheck: ['AGREE_TO_RECEIVE_ADS'],
     },
     {
       label: 'POLICY_AGREE_MARKETING_PUSH',
       text: '[선택] 앱 푸시 수신 동의',
       labelsToCheck: ['POLICY_AGREE_COLLECT', 'AGREE_TO_RECEIVE_ADS'],
-      labelsToUncheck: ['AGREE_TO_RECEIVE_ADS'],
     },
   ],
 }
